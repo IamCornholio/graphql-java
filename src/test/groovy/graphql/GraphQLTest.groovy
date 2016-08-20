@@ -1,6 +1,8 @@
 package graphql
 
 import graphql.language.SourceLocation
+import graphql.schema.DataFetcher
+import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
@@ -37,6 +39,36 @@ class GraphQLTest extends Specification {
         then:
         result == [hello: 'world']
 
+    }
+
+    def "incomplete builder overrides"() {
+        given:
+        DataFetcher dataFetcher = new DataFetcher() {
+            @Override
+            Object get(DataFetchingEnvironment environment) {
+                return environment.arguments.entrySet().getAt(0).value;
+            }
+        }
+
+        GraphQLObjectType objectType = newObject()
+                .name("root")
+                .field(newFieldDefinition()
+                    .type(GraphQLString)
+                    .name("field")
+                    .argument(newArgument()
+                        .name("arg")
+                        .type(GraphQLString))
+                    .dataFetcher(dataFetcher))
+        .build()
+
+        GraphQLSchema schema = newSchema()
+                .query(objectType).build()
+
+        when:
+        def result = new GraphQL(schema).execute('{ field(arg: "Test") }').data
+
+        then:
+        result == [field: 'Test']
     }
 
     def "query with sub-fields"() {
