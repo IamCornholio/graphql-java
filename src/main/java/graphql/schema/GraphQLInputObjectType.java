@@ -91,8 +91,7 @@ public class GraphQLInputObjectType implements GraphQLType, GraphQLInputType, Gr
             assertNotNull(builderFunction, "builderFunction should not be null");
             GraphQLInputObjectField.Builder builder = GraphQLInputObjectField.newInputObjectField();
             builder = builderFunction.apply(builder);
-            fields.add(builder.build());
-            return this;
+            return field(builder);
         }
 
         /**

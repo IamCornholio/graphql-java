@@ -109,8 +109,7 @@ public class GraphQLInterfaceType implements GraphQLType, GraphQLOutputType, Gra
             assertNotNull(builderFunction, "builderFunction can't be null");
             GraphQLFieldDefinition.Builder builder = GraphQLFieldDefinition.newFieldDefinition();
             builder = builderFunction.apply(builder);
-            this.fields.add(builder.build());
-            return this;
+            return field(builder);
         }
 
         /**

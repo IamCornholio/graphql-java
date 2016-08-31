@@ -132,8 +132,7 @@ public class GraphQLDirective {
         public Builder argument(BuilderFunction<GraphQLArgument.Builder> builderFunction) {
             GraphQLArgument.Builder builder = GraphQLArgument.newArgument();
             builder = builderFunction.apply(builder);
-            this.arguments.add(builder.build());
-            return this;
+            return argument(builder);
         }
 
         /**
