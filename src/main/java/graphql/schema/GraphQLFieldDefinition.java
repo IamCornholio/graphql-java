@@ -96,6 +96,18 @@ public class GraphQLFieldDefinition {
             return this;
         }
 
+        public Builder type(GraphQLObjectType.Builder builder) {
+            return type(builder.build());
+        }
+
+        public Builder type(GraphQLInterfaceType.Builder builder) {
+            return type(builder.build());
+        }
+
+        public Builder type(GraphQLUnionType.Builder builder) {
+            return type(builder.build());
+        }
+
         public Builder type(GraphQLOutputType type) {
             this.type = type;
             return this;
